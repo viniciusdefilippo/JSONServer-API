@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:3000/pessoas';
+//const API_URL = 'http://localhost:3000/pessoas';
+const API_URL = 'https://jsonserver.vvgdf.repl.co/pessoas';
+
 
 async function getUser(userId) {
     let response = await fetch(`${API_URL}/${userId}`);
