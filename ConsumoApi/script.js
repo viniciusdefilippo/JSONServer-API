@@ -2,61 +2,27 @@
 const API_URL = 'https://jsonserver.vvgdf.repl.co/pessoas';
 
 
-async function getUser(userId) {
-    let response = await fetch(`${API_URL}/${userId}`);
-    if (!response.ok) 
-        throw new Error(`HTTP error! status: ${response.status}`)
-    return await response.json()
+async function createUser(data) {
+    let json
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data),
+        })
+        json = await response.json()
+    } catch (error) {
+        console.log(`HTTP error! status: ${response.status}`)
+    }
+    if (json)
+        return json
 }
 
-async function delUser(userId) {
-    let response = await fetch(`${API_URL}/${userId}`, {method: 'DELETE'});
-    if (!response.ok) 
-        throw new Error(`HTTP error! status: ${response.status}`)
-    return await response.json()
-}
-
-async function setUser(data) {
-    const response = await fetch(API_URL, {method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data),
-    });
-    if (!response.ok) 
-        throw new Error(`HTTP error! status: ${response.status}`)
-    return await response.json()
-}
-
-async function updateUser(data,event) {
-    let id = (data.id)
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data),
-    });
-    if (!response.ok) 
-        throw new Error(`HTTP error! status: ${response.status}`)
-   return await response.json()
-}
-
-async function getData() {
-    console.log('Retornando dados...')
-    const user = await getUser(11)
-    console.log(user)
+async function create() {
+    clearData()
     let response = document.getElementById("response")
-
-    for (var [key, value] of Object.entries(user)) {
-        let li = document.createElement("li");
-        li.innerHTML = key + ": " + value
-        response.appendChild(li);
-    } 
-}
-
-async function delData() {
-    console.log('Removendo dados...')
-    console.log(await delUser(11))
-}
-
-async function setData() {
     console.log('Inserindo dados...')
     const objectUser = {
         id: 11,
@@ -85,10 +51,75 @@ async function setData() {
         Latitude: -23203607,
         Longitude: -46497159
     }
-    console.log(await setUser(objectUser))
+    const data = await createUser(objectUser)
+
+    if (JSON.stringify(data) === '{}') {
+        let li = document.createElement("li");
+        li.innerHTML = 'Não foi possível inserir o registro'
+        response.appendChild(li);
+    } else {
+        for (var [key, value] of Object.entries(data)) {
+            let li = document.createElement("li")
+            li.innerHTML = key + ": " + value
+            response.appendChild(li)
+        }
+    }
 }
 
-async function updateData(event) {
+async function readUser(userId) {
+    let json
+    try {
+        const response = await fetch(`${API_URL}/${userId}`);
+        json = await response.json()
+    } catch (error) {
+        console.log(`HTTP error! status: ${response.status}`)
+    }
+    if (json)
+        return json
+}
+
+async function read() {
+    clearData()
+    let response = document.getElementById("response")
+    console.log('Buscando dados...')
+    const data = await readUser(11)
+    console.log(data)
+
+    if (JSON.stringify(data) === '{}') {
+        let li = document.createElement("li");
+        li.innerHTML = 'Registro vazio.'
+        response.appendChild(li);
+    } else {
+        for (var [key, value] of Object.entries(data)) {
+            let li = document.createElement("li")
+            li.innerHTML = key + ": " + value
+            response.appendChild(li)
+        }
+    }
+}
+
+async function updateUser(data) {
+    let id = (data.id)
+    let json
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data),
+        })
+        json = await response.json()
+    } catch (error) {
+        console.log(`HTTP error! status: ${response.status}`)
+    }
+    if (json)
+        return json
+}
+
+async function update() {
+    clearData()
+    let response = document.getElementById("response")
     console.log('Atualizando dados...')
     const objectUser = {
         id: 11,
@@ -117,25 +148,58 @@ async function updateData(event) {
         Latitude: -23203607,
         Longitude: -46497159
     }
-    
-    
-    const data = await updateUser(objectUser,event)
+    const data = await updateUser(objectUser)
 
-    console.log(event)
-    
-    let response = document.getElementById("response")
-
-
-    for (var [key, value] of Object.entries(data)) {   
+    if (JSON.stringify(data) === '{}') {
         let li = document.createElement("li");
-        li.innerHTML = key + ": " + value
+        li.innerHTML = 'Não foi possível atualizar o registro'
         response.appendChild(li);
-    } 
-    
-    
+    } else {
+        for (var [key, value] of Object.entries(data)) {
+            let li = document.createElement("li")
+            li.innerHTML = key + ": " + value
+            response.appendChild(li)
+        }
+    }
 }
 
-document.getElementById("btn_getData").addEventListener('click', getData)
-document.getElementById("btn_setData").addEventListener('click', setData)
-document.getElementById("btn_updateData").addEventListener('click', updateData, false)
-document.getElementById("btn_delData").addEventListener('click', delData)
+async function delUser(userId) {
+    let json
+    try {
+        let response = await fetch(`${API_URL}/${userId}`, {
+            method: 'DELETE'
+        });
+        json = await response.json()
+    } catch (error) {
+        console.log(`HTTP error! status: ${response.status}`)
+    }
+    if (json)
+        return json
+}
+
+async function del() {
+    clearData()
+    let response = document.getElementById("response")
+    console.log('Removendo dados...')
+    const data = await delUser(11)
+
+    if (JSON.stringify(data) === '{}') {
+        let li = document.createElement("li");
+        li.innerHTML = 'Registro removido com sucesso.'
+        response.appendChild(li);
+    } else {
+        let li = document.createElement("li");
+        li.innerHTML = 'Não foi possível remover o registro.'
+        response.appendChild(li);
+    }
+}
+
+const clearData = () => {
+    let data = document.getElementById("response")
+    if (data) data.innerHTML = '';
+}
+
+document.getElementById("btn_create").addEventListener('click', create)
+document.getElementById("btn_read").addEventListener('click', read)
+document.getElementById("btn_update").addEventListener('click', update)
+document.getElementById("btn_delete").addEventListener('click', del)
