@@ -19,7 +19,7 @@ https://jsonserver.vvgdf.repl.co/pessoas
 
 Para configurar o JSON Server no Replit:
 - Criar um projeto Node.js
-- Rodar no console:
+- Rodar no console do Replit:
 > npm install json-server
 - Inserir o seguinte conteúdo no arquivo **index.js**:
 ```javascript
@@ -34,7 +34,7 @@ server.listen(3000, () => {
   console.log('JSON Server is running')
 })
 ``` 
-- Rodar o projeto
-- Copiar o link de acesso gerado pelo Replit como por exemplo:https: //jsonserver.vvgdf.repl.co/pessoas
+- Rodar o projeto no Replit
+- Copiar o link de acesso gerado pelo Replit como por exemplo: https://jsonserver.vvgdf.repl.co/pessoas
 
 
