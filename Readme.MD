@@ -10,8 +10,31 @@ Projeto contendo [JSON server](https://github.com/typicode/json-server) para rod
 
 > json-server db.json
 
+- Para maiores detalhes sobre o servidor local, consultar o arquivo **\JsonApi_Local\Readme.MD** 
+
 ## JsonApi_Remote
 
 Projeto contendo o [JSON server](https://github.com/typicode/json-server) que roda remotamente no Replit através do link:
 https://jsonserver.vvgdf.repl.co/pessoas
+
+Para configurar o JSON Server no Replit:
+- Criar um projeto Node.js
+- Rodar no console:
+> npm install json-server
+- Inserir o seguinte conteúdo no arquivo **index.js**:
+```javascript
+const jsonServer = require('json-server')
+const server = jsonServer.create()
+const router = jsonServer.router('db.json')
+const middlewares = jsonServer.defaults()
+
+server.use(middlewares)
+server.use(router)
+server.listen(3000, () => {
+  console.log('JSON Server is running')
+})
+``` 
+- Rodar o projeto
+- Copiar o link de acesso gerado pelo Replit como por exemplo:https: //jsonserver.vvgdf.repl.co/pessoas
+
 
