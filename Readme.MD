@@ -11,6 +11,7 @@ Projeto contendo [JSON server](https://github.com/typicode/json-server) para rod
 > json-server db.json
 
 - Para maiores detalhes sobre o servidor local, consultar o arquivo **\JsonApi_Local\Readme.MD** 
+- **IMPORTANTE:** Não utilizar a extensão Live Server do VSCode quando estiver utilizando o servidor local. O Live Server provoca um reload na página após as operações de CREATE, UPDATE E DELETE. Sendo assim, após a atualização da página, os dados não são mais apresentados. 
 
 ## JsonApi_Remote
 
